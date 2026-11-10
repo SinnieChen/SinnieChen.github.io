@@ -1,17 +1,38 @@
-# Sinnie Chen — Personal Homepage
+# Sinnie Chen — Personal Academic Website
 
-Static personal academic homepage prepared for GitHub Pages.
+This repository contains the source files for my personal academic website, hosted with GitHub Pages.
 
-- `index.html` — animated welcome page converted from `Begin.aspx`
-- `main.html` — personal homepage converted from `Main.aspx`
-- Click the flower on the welcome page to enter the personal homepage.
+**Live site:** [https://sinniechen.github.io/](https://sinniechen.github.io/)
 
-## Publishing
+## About
 
-In the repository settings, open **Pages**, select **Deploy from a branch**, and publish the `main` branch from `/ (root)`.
+The website introduces my academic background, research interests, technical skills, research projects, publications, intellectual property, and awards. My primary interests include health geography, geographic information science, remote sensing, and GeoAI.
 
-Because this repository is named `Sinnie-Chen.github.io` rather than `cxxy524230-sketch.github.io`, its default project-site address is:
+## Website Structure
 
-`https://cxxy524230-sketch.github.io/Sinnie-Chen.github.io/`
+- `index.html` — animated welcome page
+- `main.html` — main academic profile
+- `XinyiFlower.png` — interactive flower graphic used on the welcome page
+- `Portrait.JPG` — profile photograph
+- `Assets/` — university logos and other page images
+- `Fonts/` — locally hosted web font
+- `.nojekyll` — disables Jekyll processing for direct static-file deployment
 
-To publish at `https://cxxy524230-sketch.github.io/`, rename the repository to `cxxy524230-sketch.github.io`.
+Visitors enter through the animated welcome page and can click the flower to open the main profile.
+
+## Deployment
+
+The site is published from the repository root of `SinnieChen/SinnieChen.github.io` using GitHub Pages. Updates pushed to the configured publishing branch are deployed automatically.
+
+## Technologies
+
+- HTML5
+- CSS3
+- Vanilla JavaScript
+- HTML Canvas animation
+- GitHub Pages
+
+## Author
+
+**Xinyi Chen (Sinnie Chen)**  
+Geographic Information Science · Health Geography · GeoAI
