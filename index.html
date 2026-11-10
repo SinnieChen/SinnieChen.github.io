@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Welcome | Sinnie Chen</title>
+    <style>
+        @font-face {
+            font-family:"Sinnie Editorial";
+            src:local("Anthropic Serif"),local("anthropic-serif"),url("Fonts/dm-serif-text-latin-400-normal.woff2") format("woff2");
+            font-style:normal;
+            font-weight:300;
+            font-display:swap;
+            unicode-range:U+0000-024F,U+1E00-1EFF;
+        }
+        @font-face {
+            font-family:"Sinnie Editorial";
+            src:local("Noto Serif SC Light"),local("Noto Serif SC"),local("Source Han Serif SC Light"),local("Source Han Serif SC"),local("思源宋体 Light"),local("思源宋体");
+            font-style:normal;
+            font-weight:300;
+            font-display:swap;
+            unicode-range:U+2E80-2EFF,U+3000-303F,U+3400-4DBF,U+4E00-9FFF,U+F900-FAFF,U+FF00-FFEF;
+        }
+        :root { color-scheme: light; --accent:#D97757; --ink:#F9F8F6; --text:#1A1A1A; --muted:#4A4543; --line:rgba(74,69,67,.18); }
+        * { box-sizing:border-box; }
+        html, body, #page-root { width:100%; height:100%; margin:0; overflow:hidden; background:var(--ink); }
+        body { color:var(--text); font-family:"Sinnie Editorial",serif; font-style:normal; font-weight:300; }
+        button { font:inherit; }
+        .scene { position:relative; width:100%; height:100%; min-height:560px; isolation:isolate; background:radial-gradient(circle at 52% 48%,#fff 0,#F9F8F6 48%,#F2EFEB 100%); }
+        #particleCanvas { position:absolute; inset:0; width:100%; height:100%; z-index:0; }
+        .grain { position:absolute; inset:0; z-index:1; pointer-events:none; opacity:.022; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.38'/%3E%3C/svg%3E"); mix-blend-mode:multiply; }
+        .chrome { position:absolute; inset:0; z-index:2; opacity:0; animation:uiIn 1.45s cubic-bezier(.2,.75,.2,1) 7.2s forwards; }
+        .brand { position:absolute; left:clamp(18px,2.8vw,48px); top:clamp(18px,3.5vh,34px); display:flex; align-items:center; gap:9px; color:var(--muted); font-size:11px; letter-spacing:.04em; }
+        .brand-mark { width:20px; height:20px; border:1px solid rgba(217,119,87,.58); border-radius:50%; position:relative; box-shadow:0 0 12px rgba(217,119,87,.16); }
+        .brand-mark::before,.brand-mark::after { content:""; position:absolute; inset:5px 3px; border:1px solid var(--accent); border-radius:50%; transform:rotate(32deg); }
+        .brand-mark::after { transform:rotate(-32deg); }
+        .status { position:absolute; right:clamp(18px,2.8vw,48px); top:clamp(18px,3.5vh,34px); display:flex; align-items:center; gap:12px; color:var(--muted); font-size:9px; letter-spacing:.12em; text-transform:uppercase; }
+        .status i { width:5px; height:5px; border-radius:50%; background:var(--accent); box-shadow:0 0 8px rgba(217,119,87,.28); }
+        .hero { position:absolute; left:clamp(22px,10vw,200px); top:50%; transform:translateY(-18%); }
+        .eyebrow { margin:0 0 11px; color:var(--muted); font-size:12px; line-height:1.4; letter-spacing:.25em; text-transform:uppercase; }
+        h1 { margin:0; color:var(--accent); font-size:clamp(36px,4.3vw,72px); font-style:normal; font-weight:300; line-height:.95; letter-spacing:.01em; text-shadow:0 8px 28px rgba(217,119,87,.10); }
+        .subline { display:flex; align-items:center; gap:8px; margin-top:12px; color:var(--muted); font-size:8px; letter-spacing:.16em; }
+        .subline::before { content:""; width:28px; height:1px; background:var(--accent); box-shadow:0 0 8px rgba(217,119,87,.2); }
+        .skip { position:absolute; right:18px; bottom:14px; z-index:3; padding:6px 9px; border:0; color:#7C746F; background:transparent; font-size:8px; letter-spacing:.12em; cursor:pointer; }
+        .skip:hover { color:var(--accent); }
+        @keyframes uiIn { from{opacity:0;filter:blur(8px);transform:scale(.985)} to{opacity:1;filter:blur(0);transform:scale(1)} }
+        @media (max-width:680px) { .scene{min-height:480px}.status{display:none}.hero{top:44%}h1{font-size:42px} }
+        @media (prefers-reduced-motion:reduce) { .chrome{opacity:1;animation:none}.skip{display:none} }
+    </style>
+</head>
+<body>
+<div id="page-root">
+    <main class="scene" id="scene" aria-label="Sinnie Web &#27426;&#36814;&#39029;">
+        <canvas id="particleCanvas" aria-hidden="true"></canvas>
+        <div class="grain" aria-hidden="true"></div>
+        <section class="chrome" id="chrome">
+            <div class="brand"><span class="brand-mark" aria-hidden="true"></span><span>Sinnie Space</span></div>
+            <header class="hero">
+                <h1>Hi, I am Sinnie</h1>
+                <p class="eyebrow"> </p>
+                <p class="eyebrow">Welcome to mine space</p>
+            </header>
+        </section>
+        <button class="skip" id="skipIntro" type="button">SKIP INTRO</button>
+    </main>
+</div>
+<script>
+(function(){
+    "use strict";
+    var canvas=document.getElementById("particleCanvas"),ctx=canvas.getContext("2d",{alpha:false});
+    var scene=document.getElementById("scene"),chrome=document.getElementById("chrome"),skip=document.getElementById("skipIntro");
+    var maskImage=new Image(),maskReady=false,particles=[],targets=[],targetBounds=null,start=performance.now(),intro=7600;
+    var flowerHover=false,flowerScale=1,flowerReady=false;
+    var reduced=matchMedia("(prefers-reduced-motion: reduce)").matches,w=0,h=0,dpr=1,seed=1789;
+    var glyphs="SINNIECYX*$";
+    maskImage.src="XinyiFlower.png";
+    maskImage.onload=function(){maskReady=true;build();};
+    function rnd(){seed=(seed*16807)%2147483647;return(seed-1)/2147483646;}
+    function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+    function ease(t){t=clamp(t,0,1);return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
+    function resize(){dpr=Math.min(devicePixelRatio||1,2.25);w=scene.clientWidth;h=scene.clientHeight;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);canvas.style.width=w+"px";canvas.style.height=h+"px";ctx.setTransform(dpr,0,0,dpr,0,0);build();}
+    function makeTargets(){
+        targets=[];if(!maskReady)return;
+        var rows=w<700?64:92,cols=Math.round(rows*maskImage.naturalWidth/maskImage.naturalHeight);
+        var off=document.createElement("canvas"),oc=off.getContext("2d",{willReadFrequently:true});off.width=cols;off.height=rows;oc.drawImage(maskImage,0,0,cols,rows);
+        var data=oc.getImageData(0,0,cols,rows).data,targetH=h*.75,cell=targetH/rows,targetW=cols*cell;
+        var rightGap=Math.max(20,w*.035),left=Math.max(w*.46,w-rightGap-targetW)-50,top=(h-targetH)/2;
+        targetBounds={left:left,top:top,right:left+targetW,bottom:top+targetH,cx:left+targetW/2,cy:top+targetH/2};
+        for(var y=0;y<rows;y++)for(var x=0;x<cols;x++){var lum=data[(y*cols+x)*4];if(lum>6){targets.push({x:left+(x+.5)*cell,y:top+(y+.72)*cell,char:glyphs[(x*7+y*11)%glyphs.length],a:.32+Math.sqrt(lum/255)*.68,size:Math.max(4.6,cell*1.04)});}}
+    }
+    function build(){
+        seed=1789;makeTargets();var areaCount=Math.floor(w*h/150),count=Math.max(3000,Math.min(7200,Math.max(areaCount,targets.length)));
+        particles=[];var min=Math.min(w,h),radius=min*.55,tilt=-.42,c=Math.cos(tilt),s=Math.sin(tilt);
+        for(var i=0;i<count;i++){
+            var core=rnd()<.69,r=radius*(core?Math.pow(rnd(),2.35):Math.pow(rnd(),.72));
+            var arm=i%3,angle=r/radius*Math.PI*5.8+arm*Math.PI*2/3+(rnd()-.5)*(.22+1.1*r/radius);
+            var lx=Math.cos(angle)*r,ly=Math.sin(angle)*r*.30+(rnd()-.5)*(5+26*r/radius);
+            particles.push({gx:w*.5+lx*c-ly*s,gy:h*.49+lx*s+ly*c,r:r/radius,z:rnd(),tw:rnd()*6.283,target:targets.length?targets[i%targets.length]:null});
+        }
+    }
+    function background(pulse){ctx.globalCompositeOperation="source-over";ctx.fillStyle="#F9F8F6";ctx.fillRect(0,0,w,h);var g=ctx.createRadialGradient(w*.52,h*.48,0,w*.52,h*.48,Math.min(w,h)*.68);g.addColorStop(0,"rgba(217,119,87,"+(.025+.012*pulse)+")");g.addColorStop(.42,"rgba(217,119,87,.008)");g.addColorStop(1,"rgba(255,255,255,0)");ctx.fillStyle=g;ctx.fillRect(0,0,w,h);}
+    function drawGalaxyParticle(p,now,m){
+        var drift=(1-m)*(now-start)*.000075*(1.15-p.r),cs=Math.cos(drift),sn=Math.sin(drift),cx=w*.5,cy=h*.49;
+        var dx=p.gx-cx,dy=p.gy-cy,gx=cx+dx*cs-dy*sn,gy=cy+dx*sn+dy*cs;
+        var target=p.target,tx=target?target.x:gx,ty=target?target.y:gy,x=gx+(tx-gx)*m,y=gy+(ty-gy)*m;
+        if(m>.56&&target){var a=target.a*ease((m-.56)/.44);ctx.font="300 "+target.size+"px 'Sinnie Editorial',serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="rgba(217,119,87,"+a+")";ctx.fillText(target.char,x,y);return;}
+        var core=1-p.r,twinkle=.82+.18*Math.sin(now*.0022+p.tw),alpha=(.34+core*.98)*twinkle*(1-ease((m-.18)/.58));
+        var size=.28+p.z*.68+core*.58;ctx.fillStyle="rgba(217,119,87,"+clamp(alpha,0,1).toFixed(3)+")";ctx.fillRect(x,y,size,size);
+        if(core>.80&&p.z>.82){ctx.fillStyle="rgba(142,71,49,"+(alpha*.58).toFixed(3)+")";ctx.fillRect(x-.8,y,size+1.6,.28);}
+    }
+    function render(now){
+        var t=reduced?1:clamp((now-start)/intro,0,1),m=ease((t-.43)/.48),pulse=Math.sin(now*.0007)*.5+.5;background(pulse);
+        ctx.globalCompositeOperation="source-over";for(var i=0;i<particles.length;i++)drawGalaxyParticle(particles[i],now,m);
+        if(t<1)requestAnimationFrame(render);else{flowerReady=true;requestAnimationFrame(idle);}
+    }
+    function idle(now){
+        background(0);
+        var desiredScale=flowerHover?1.055:1;
+        flowerScale+=(desiredScale-flowerScale)*.16;
+        if(Math.abs(flowerScale-desiredScale)<.0005)flowerScale=desiredScale;
+        var approach=clamp((flowerScale-1)/.055,0,1),weightOffset=.42*approach;
+        for(var i=0;i<targets.length;i++){
+            var q=targets[i],x=q.x,y=q.y;
+            if(targetBounds){x=targetBounds.cx+(x-targetBounds.cx)*flowerScale;y=targetBounds.cy+(y-targetBounds.cy)*flowerScale;}
+            ctx.font="300 "+(q.size*flowerScale)+"px 'Sinnie Editorial',serif";
+            ctx.textAlign="center";ctx.textBaseline="middle";
+            ctx.fillStyle="rgba(217,119,87,"+q.a+")";
+            ctx.fillText(q.char,x,y);
+            if(approach>.01){ctx.fillText(q.char,x-weightOffset,y);ctx.fillText(q.char,x+weightOffset,y);}
+        }
+        if(!reduced)requestAnimationFrame(idle);
+    }
+    function finish(){start=performance.now()-intro;chrome.style.animation="none";chrome.style.opacity="1";skip.style.display="none";}
+    function isInsideFlower(x,y){if(!flowerReady||!targetBounds)return false;var halfW=(targetBounds.right-targetBounds.left)*flowerScale/2,halfH=(targetBounds.bottom-targetBounds.top)*flowerScale/2;return x>=targetBounds.cx-halfW&&x<=targetBounds.cx+halfW&&y>=targetBounds.cy-halfH&&y<=targetBounds.cy+halfH;}
+    scene.addEventListener("pointermove",function(e){var r=scene.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;flowerHover=isInsideFlower(x,y);scene.style.cursor=flowerHover?"pointer":"default";},{passive:true});
+    scene.addEventListener("pointerleave",function(){flowerHover=false;scene.style.cursor="default";},{passive:true});
+    scene.addEventListener("click",function(e){var r=scene.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;if(isInsideFlower(x,y))window.location.href="main.html";});
+    skip.addEventListener("click",function(){finish();});window.addEventListener("resize",resize,{passive:true});resize();
+    if(reduced||new URLSearchParams(location.search).has("skip"))finish();requestAnimationFrame(render);
+    setTimeout(function(){skip.style.opacity="0";skip.style.pointerEvents="none";},8600);
+})();
+</script>
+</body>
+</html>
